@@ -48,6 +48,7 @@ export function OutlinePanel({ file, theme, layout }: PluginFilePanelProps) {
   const content = useRef<ScrollView>(null);
   const blockHeights = useRef<number[]>([]);
   const jumpUntil = useRef(0);
+  const jumpTarget = useRef(-1);
 
   const save = (patch: Partial<Prefs>) => {
     if (settings.status === "ready") void settings.save({ ...settings.values, ...patch }, settings.revision);
@@ -76,7 +77,8 @@ export function OutlinePanel({ file, theme, layout }: PluginFilePanelProps) {
   const onScroll = useCallback(
     (event: NativeSyntheticEvent<NativeScrollEvent>) => {
       if (Date.now() < jumpUntil.current) return;
-      const y = event.nativeEvent.contentOffset.y + ACTIVE_SLOP;
+      const { contentOffset, layoutMeasurement, contentSize } = event.nativeEvent;
+      const y = contentOffset.y + ACTIVE_SLOP;
       let current = -1;
       let top = CONTENT_PADDING;
       let block = 0;
@@ -85,6 +87,10 @@ export function OutlinePanel({ file, theme, layout }: PluginFilePanelProps) {
         if (top > y) break;
         current = i;
       }
+      // A heading near the end cannot scroll to the top; keep the one the user picked while at the bottom.
+      const atBottom = contentOffset.y + layoutMeasurement.height >= contentSize.height - 4;
+      if (atBottom && jumpTarget.current > current) current = jumpTarget.current;
+      else jumpTarget.current = -1;
       setActive(current);
     },
     [headingBlocks],
@@ -95,6 +101,7 @@ export function OutlinePanel({ file, theme, layout }: PluginFilePanelProps) {
       const block = headingBlocks[index];
       if (block === undefined) return;
       jumpUntil.current = Date.now() + JUMP_HOLD_MS;
+      jumpTarget.current = index;
       setActive(index);
       setCompactOpen(false);
       content.current?.scrollTo({ y: offsetOfBlock(block), animated: true });
@@ -209,7 +216,7 @@ const DocumentBlocks = memo(function DocumentBlocks({
         {doc.frontMatter.length > 0 ? <FrontMatter rows={doc.frontMatter} theme={theme} /> : null}
       </Block>
       {doc.sections.map((section, k) => (
-        <Block key={k} block={k + 1} style={styles.block} onBlockLayout={onBlockLayout}>
+        <Block key={k} block={k + 1} style={k > 0 ? styles.section : styles.block} onBlockLayout={onBlockLayout}>
           <SectionMarkdown markdown={section.markdown} />
         </Block>
       ))}
@@ -294,6 +301,8 @@ function panelStyles(theme: PluginTheme, compact: boolean) {
     main: { flex: 1, minWidth: 0 },
     content: { paddingVertical: CONTENT_PADDING, paddingHorizontal: compact ? 12 : 28 },
     block: { width: "100%" as const, maxWidth: 860, alignSelf: "center" as const },
+    // Sections render separately, so the gap a heading normally gets from the paragraph above is lost.
+    section: { width: "100%" as const, maxWidth: 860, alignSelf: "center" as const, paddingTop: compact ? 12 : 18 },
     error: { color: colors.statusDanger, padding: 16 },
     outline: { backgroundColor: colors.surface1, borderColor: colors.border },
     outlineLeft: { borderRightWidth: 1 },
