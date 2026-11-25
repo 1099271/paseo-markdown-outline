@@ -1,0 +1,23 @@
+{
+  "panelTitle": "Markdown 大纲",
+  "outline": "大纲",
+  "empty": "没有标题",
+  "showOutline": "显示大纲",
+  "hideOutline": "隐藏大纲",
+  "moveLeft": "大纲移到左侧",
+  "moveRight": "大纲移到右侧",
+  "collapseAll": "全部折叠",
+  "expandAll": "全部展开",
+  "toggleSection": "展开或折叠 {{title}}",
+  "settingsTitle": "布局",
+  "side": "大纲位置",
+  "left": "左侧",
+  "right": "右侧",
+  "width": "大纲宽度",
+  "narrow": "窄",
+  "normal": "中",
+  "wide": "宽",
+  "visible": "打开文件时显示大纲",
+  "visibleHint": "只对宽窗口生效。手机上点按钮打开大纲。",
+  "deviceHint": "这些设置只保存在当前设备上。"
+}

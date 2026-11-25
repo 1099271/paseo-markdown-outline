@@ -1,0 +1,15 @@
+{
+  "id": "markdown-outline",
+  "name": "Markdown Outline",
+  "description": "Read Markdown files with a collapsible heading outline on the left or right.",
+  "translations": {
+    "zh-CN": {
+      "name": "Markdown 大纲",
+      "description": "阅读 Markdown 文件时，在左侧或右侧显示可折叠的标题大纲。"
+    }
+  },
+  "media": ["assets/screenshot.png"],
+  "requirements": {
+    "paseo": ">=0.17.1"
+  }
+}

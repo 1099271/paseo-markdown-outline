@@ -1,0 +1,23 @@
+{
+  "panelTitle": "Markdown with outline",
+  "outline": "Outline",
+  "empty": "No headings",
+  "showOutline": "Show outline",
+  "hideOutline": "Hide outline",
+  "moveLeft": "Move outline to the left",
+  "moveRight": "Move outline to the right",
+  "collapseAll": "Collapse all",
+  "expandAll": "Expand all",
+  "toggleSection": "Expand or collapse {{title}}",
+  "settingsTitle": "Layout",
+  "side": "Outline side",
+  "left": "Left",
+  "right": "Right",
+  "width": "Outline width",
+  "narrow": "Narrow",
+  "normal": "Normal",
+  "wide": "Wide",
+  "visible": "Show outline when a file opens",
+  "visibleHint": "Wide windows only. On phones the outline opens from its button.",
+  "deviceHint": "These choices are saved on this device."
+}
